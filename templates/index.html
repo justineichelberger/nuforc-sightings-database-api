@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script>
+        </script>
+    </head>
+    <body style="background-color: black; z-index: 0;">
+
+        <!-- <h2 id='header' style='padding-right: 8%; text-transform: uppercase; text-align: right; font-family: verdana; color: lightgray; z-index: 1'>
+            today_in_this_solar_year_of_gregorian_calendar is 
+            dayclass {{todays_ordinal_MODish_year}}
+        </h2> -->
+
+        <!-- <p id='subheader' style='text-transform: uppercase;'>
+            on day_class {{todays_ordinal_MODish_year}} of gregorian_calendar_solar_year these unidentified phenomena were observed
+        </p> -->
+
+        <table align="right" style='background-color: black; border-collapse: collapse; color: lightgray; font-family: verdana; text-transform: uppercase; width: 600px; z-index: 1'>
+                <tr>
+                    <th>
+                    </th>
+                    <th style="font-size: 18px; text-align: left;">
+                        dayclass {{todays_ordinal_MODish_year}}
+                    </th>
+                </tr>
+                <tr style="font-size: 14px; text-align: left;">
+                    <th>
+                        endpoint
+                    </th>
+                    <th>
+                        url
+                    </th>
+                </tr>
+                {% for link in links %}
+                    {% if link[0].split('/')[2] != 'query' and link[0].split(':')[-2] != '/sightings/query_parameter'%}
+                        <tr style="font-size: 12px; text-align: left;">
+                            <td style="text-align: left; padding-right: 10px;">{{link[1]}}</td>
+                            <td style="text-align: left;"><a style="color:lightgray;" href="{{link[0]}}">{{link[0]}}{{link[0].split(':')[-2]}}</a></td>
+                        </tr>
+                    {% endif %}
+                    {% if link[0].split('/')[-1] == 'query' %}
+                        <tr style="font-size: 12px; text-align: left;">
+                            <td style="text-align: left; padding-right: 10px;">{{link[1]}}</td>
+                            <td style="text-align: left;"><a style="color:lightgray;" href="/sightings/today/random">/sightings</a>/query?<a style="font-style: italic;">parameter(s)</a></td>
+                        </tr>
+                    {% elif link[0].split(':')[-2] == '/sightings/query_parameter' %}
+                        <tr style="font-size: 12px; text-align: left;">
+                            <td style="text-align: left; padding-right: 10px;">{{link[1]}}</td>
+                            <td style="text-align: left;"><a style="color:lightgray;" href="/sightings/today/random">/sightings</a>/query?{{link[0].split(':')[-1]}}=<a style="font-style: italic;">value</a>&</td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+        </table>
+        <!-- <p id="randomData" style="font-size: 10px;">
+            {{random_ufo_sighting_from_today}}
+        </p>
+        <p id="todaysData" style="font-size: 10px;">
+            [{{today_in_ufo_sightings|safe}}]
+        </p> -->
+        <script type='text/javascript'>
+            function inject_data(variable) {
+                return variable
+            };
+            const today_in_ufo_sightings = inject_data( 
+                [{{today_in_ufo_sightings|safe}}] 
+            );
+            console.log(today_in_ufo_sightings);
+        </script>
+    </body>
+</html>
