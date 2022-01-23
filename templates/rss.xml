@@ -9,18 +9,18 @@ render the feed to RSS XML.  citation: https://github.com/hypothesis/h/blob/mast
      xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>{{ feed.title }}</title>
-    <br>
+    
     <link>{{ feed.title }}</link>
-    <br>
+    
     <atom:link href="{{feed.rss_url}}" rel="self" type="application/rss+xml" />
-    <br>
+    
     <a href="https://github.com/justineichelberger/nuforc_API">https://github.com/justineichelberger/nuforc_API</a>
-    <br>
+    
     <description>{{ feed.description }}</description>
-    <br>
+    
     <pubDate>{{ feed.pubDate }}</pubDate>
-    <br>
-    <br>
+    
+    
 
     {% for entry in feed.entries %}
     <item>
@@ -28,15 +28,15 @@ render the feed to RSS XML.  citation: https://github.com/hypothesis/h/blob/mast
        {{entry.title}}
        </title>
        <a href="{{entry.link}}">{{entry.link}}</a>
-       <br>
+       
        <description>
-       witnessed: {{entry.description}}<br>
-       published: {{entry.pubDate}}<br> 
+       witnessed: {{entry.description}}
+       published: {{entry.pubDate}} 
        index: {{entry.title}}
        </description>
-       <br>
+       
     </item>
-    <br>
+    
     {% endfor %}
   </channel>
 </rss>
