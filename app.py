@@ -9,7 +9,8 @@ from flask import Flask, url_for, jsonify, render_template, request
 from os import path
 
 # initiate flask app
-app = flask.Flask(__name__)  
+app = flask.Flask(__name__) 
+app.config["DEBUG"] = True  
 
 ## 
 def dayclass():
