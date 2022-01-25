@@ -1,26 +1,31 @@
+import calendar
 import datetime
 import flask
 import glob
 import os
 import sqlite3
+import time
 
-from datetime import date
+from datetime import date, datetime
 from flask import Flask, url_for, jsonify, render_template, request 
 from os import path
+
+# rss_RFC822 = {'weekday':datetime.now().strftime('%a'), 'day':'%02d' % datetime.now().day, 'month':datetime.now().strftime("%b"), 'year':'%04d' % datetime.now().year, 'hour':'%02d' % datetime.now().hour, 'minute':'%02d' % datetime.now().minute, 'second':'%02d' % datetime.now().second, 'timezone':time.strftime('%z')}  
+# print(f"{rss_RFC822['weekday']}, {rss_RFC822['day']} {rss_RFC822['month']} {rss_RFC822['year']} {rss_RFC822['hour']}:{rss_RFC822['minute']}:{rss_RFC822['second']} {rss_RFC822['timezone']}")
+
 
 # initiate flask app
 app = flask.Flask(__name__) 
 app.config["DEBUG"] = True  
 
-## 
+## obtain day-class information for today
 def dayclass():
-    #### obtain day-class information for today
     if date.today().year % 4 != 0:
-        todays_ordinal_MODish_year = (date.toordinal(date.today()) - (date.toordinal(datetime.date(date.today().year, 1, 1))))+1
+        todays_ordinal_MODish_year = (date.toordinal(date.today()) - (date.toordinal(datetime(date.today().year, 1, 1))))+1
         if todays_ordinal_MODish_year > 59:
             todays_ordinal_MODish_year = todays_ordinal_MODish_year + 1
     else:
-        todays_ordinal_MODish_year = (date.toordinal(date.today()) - (date.toordinal(datetime.date(date.today().year, 1, 1))))+1
+        todays_ordinal_MODish_year = (date.toordinal(date.today()) - (date.toordinal(datetime(date.today().year, 1, 1))))+1
     return todays_ordinal_MODish_year
 
 ##  
@@ -29,19 +34,23 @@ def has_no_empty_parameters(rule):
     arguments = rule.arguments if rule.arguments is not None else ()
     return len(defaults) >= len(arguments)
 
-##
+## get path to most complete database resource
 def database_selector():
-### get path to most complete database resource
-    if os.path.getsize(sorted(glob.glob('./database/nuforc_sightings*.db'))[0]) >= os.path.getsize(sorted(glob.glob('./database/backup/nuforc_sightings*.db'))[0]):
+    if os.path.getsize(sorted(glob.glob('./database/nuforc_sightings*.db'))[-1]) >= os.path.getsize(sorted(glob.glob('./database/backup/nuforc_sightings*.db'))[-1]):
         return sorted(glob.glob('./database/nuforc_sightings*.db'))[0]
     else:
         return sorted(glob.glob('./database/backup/nuforc_sightings*.db'))[0]
+
+## format datetime for rss feed
+def rss_RFC822(datetime_published):
+    rss_RFC822_string = f"{datetime(int(datetime_published[2]), int(datetime_published[3]), int(datetime_published[4])).strftime('%a')}, {datetime_published[4]} {calendar.month_abbr[int(datetime_published[3])]} {'%04d' % int(datetime_published[2])} {datetime_published[5]}:{datetime_published[6]}:{datetime_published[7].split('.')[0]} {time.strftime('%z')}"
+    return rss_RFC822_string
 
 ##
 def queryparameter():
     pass
 
-##
+## configure SQLite query
 def query_parameters():
     city = request.args.get('city')
     date = request.args.get('date')
@@ -55,7 +64,6 @@ def query_parameters():
     startdate = request.args.get('startdate')
     state = request.args.get('state')
     year = request.args.get('year')
-###    
     query = "SELECT * FROM nuforcSightings WHERE"
     to_filter = []
     if city:
@@ -140,7 +148,7 @@ def sightings():
     complete_database = database_cursor.execute("SELECT * FROM nuforcSightings").fetchall()
     return jsonify(complete_database)
 
-### query the database
+### query the entire database
 @app.route('/sightings/query', methods=['GET', 'POST'])
 def query():
     return jsonify(query_parameters())
@@ -170,11 +178,7 @@ def random():
 def rss():
 #### obtain day-class information for today's feed
     todays_ordinal_MODish_year = dayclass()
-#### database last updated
-    pubYear = database_selector().split('/')[-1].split('_')[2]
-    pubMonth = database_selector().split('/')[-1].split('_')[3]
-    pubDay = database_selector().split('/')[-1].split('_')[4]
-#### publish date parameters
+#### query date parameters
     todaysMonth = date.today().month
     todaysDay = date.today().day
 #### connect to database
@@ -195,7 +199,7 @@ def rss():
         entry_dictionary = dict(zip(database_row.keys(), row))
         entry_dictionary["title"] = todays_sightings_count-today_row_counter
         entry_dictionary["description"] = entry_dictionary['DateAndTime']
-        entry_dictionary["pubDate"] = entry_dictionary['DateReportWasPublished']
+        entry_dictionary["pubDate"] = rss_RFC822(database_selector().split('/')[-1].split('_'))
         entry_dictionary["guid"] = entry_dictionary['CompleteSummaryURL']
         entry_dictionary["link"] = entry_dictionary['CompleteSummaryURL']
         entry_dictionary["shape"] = {'name':["NUFORC"]}
@@ -203,7 +207,7 @@ def rss():
         today_row_counter += 1
 #### generate rss feed dictionary
     entries = entries_list
-    feed = {"title":f'ufo sightings from DayClass {todays_ordinal_MODish_year} in history',"html_url":"http://127.0.0.1:5000/","rss_url":"http://127.0.0.1:5000/rss.xml","description":f'database last updated on:  {pubYear}-{pubMonth}-{pubDay}    ',"pubDate":f"today's date:  {date.today()}    ", "entries":entries}
+    feed = {"title":f'ufo sightings from dayclass {todays_ordinal_MODish_year} in history',"html_url":"https://nuforc-sightings-database-api.herokuapp.com","rss_url":"https://nuforc-sightings-database-api.herokuapp.com/sightings/today/rss","description":"database last updated on: ","pubDate":f"{rss_RFC822(database_selector().split('/')[-1].split('_'))}", "entries":entries}
     return render_template('rss.xml', feed=feed)
 
 if __name__=='__main__':

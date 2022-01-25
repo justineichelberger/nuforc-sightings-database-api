@@ -1,40 +1,36 @@
 {# Generic template for rendering an RSS feed given a feed dict.
+
 The feed dict should be a logical representation of an RSS feed as a Python
 dict, including a list of dicts for the feed's items. This template will
-render the feed to RSS XML.  citation: https://github.com/hypothesis/h/blob/master/h/templates/rss.xml.jinja2
+render the feed to RSS XML.  
+
+citation: https://github.com/hypothesis/h/blob/master/h/templates/rss.xml.jinja2
+
 -#}
+
 <?xml version="1.0" encoding="UTF-8" ?>
 <rss version="2.0"
      xmlns:atom="http://www.w3.org/2005/Atom"
      xmlns:dc="http://purl.org/dc/elements/1.1/">
   <channel>
     <title>{{ feed.title }}</title>
-    
-    <link>{{ feed.title }}</link>
-    
-    <atom:link href="{{feed.rss_url}}" rel="self" type="application/rss+xml" />
-    
-    <a href="https://github.com/justineichelberger/nuforc_API">https://github.com/justineichelberger/nuforc_API</a>
-    
+    <link>{{ feed.html_url }}</link>
+    <atom:link href="{{ feed.rss_url }}" rel="self" type="application/rss+xml" />
     <description>{{ feed.description }}</description>
-    
     <pubDate>{{ feed.pubDate }}</pubDate>
-    
-    
+    <docs>https://github.com/justineichelberger/nuforc-sightings-database-api</docs>
 
     {% for entry in feed.entries %}
     <item>
-       <title>
-       {{entry.title}}
-       </title>
-       <a href="{{entry.link}}">{{entry.link}}</a>
-       
+       <title>{{ entry.title }}</title>
        <description>
-       witnessed: {{entry.description}}
-       published: {{entry.pubDate}} 
-       index: {{entry.title}}
+       sighting_id:{{ entry.title }}
+       date_witnessed:{{ entry.description }}
+       pubslihed:
        </description>
-       
+       <pubDate>{{ entry.pubDate }}</pubDate>
+       <guid isPermaLink="false">link: </guid>
+       <link>{{ entry.link }}</link>
     </item>
     
     {% endfor %}
