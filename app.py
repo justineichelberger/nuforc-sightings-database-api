@@ -189,6 +189,7 @@ def rss():
     database_cursor = database_connection.cursor()
 ##### query database to obtain keys for feed dictionary    
     database_row = row_cursor.execute("SELECT * FROM nuforcSightings WHERE MonthOfSighting = ? AND DayOfSighting = ?", (todaysMonth, todaysDay)).fetchone()
+##### query database to obtain data for feed dictionary 
     today_database = database_cursor.execute("SELECT * FROM nuforcSightings WHERE MonthOfSighting = ? AND DayOfSighting = ?", (todaysMonth, todaysDay)).fetchall()
 #### prepare list of entries dictionary to be added to the feed dictionary 
     entries_list = []
@@ -198,7 +199,7 @@ def rss():
         entry_dictionary = {}
         entry_dictionary = dict(zip(database_row.keys(), row))
         entry_dictionary["title"] = todays_sightings_count-today_row_counter
-        entry_dictionary["description"] = entry_dictionary['DateAndTime']
+        entry_dictionary["description"] = f"In {entry_dictionary['CityAndOrCountry']} {entry_dictionary['StateOrProvince']} on {entry_dictionary['DateAndTime']} for approximately {entry_dictionary['MinimumDuration']} to {entry_dictionary['MaximumDuration']} minutes witness reports seeing '{entry_dictionary['CompleteSummary']}'"
         entry_dictionary["pubDate"] = rss_RFC822(database_selector().split('/')[-1].split('_'))
         entry_dictionary["guid"] = entry_dictionary['CompleteSummaryURL']
         entry_dictionary["link"] = entry_dictionary['CompleteSummaryURL']
