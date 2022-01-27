@@ -16,9 +16,8 @@ citation: https://github.com/hypothesis/h/blob/master/h/templates/rss.xml.jinja2
   <title>{{ feed.title }}</title>
   <link>{{ feed.html_url }}</link>
   <atom:link href="{{ feed.rss_url }}" rel="self" type="application/rss+xml" />
-  <description  type="xhtml"><xh:div><br>{{ feed.description }}</xh:div></description>
+  <description  type="xhtml"><xh:div><br><a href="https://github.com/justineichelberger/nuforc-sightings-database-api">https://github.com/justineichelberger/nuforc-sightings-database-api</a><br>{{ feed.description }}</xh:div></description>
   <pubDate>{{ feed.pubDate }}</pubDate>
-  <docs  type="xhtml"><xh:div><br><a href="https://github.com/justineichelberger/nuforc-sightings-database-api">https://github.com/justineichelberger/nuforc-sightings-database-api</a><br></xh:div></docs>
 
   {% for entry in feed.entries %}
   <item>
@@ -26,7 +25,7 @@ citation: https://github.com/hypothesis/h/blob/master/h/templates/rss.xml.jinja2
       <description  type="xhtml"><xh:div><br><a href="{{ entry.link }}">Sighting {{ entry.title }}</a><br>{{ entry.description }}<br>database last updated on {{ entry.pubDate }}<br></xh:div></description>
       <pubDate>{{ entry.pubDate }}</pubDate>
       <link>{{ entry.link }}</link>
-      <guid isPermaLink="false"  type="xhtml"><xh:div><a href="{{ entry.link }}"><br>{{ entry.link }}<br><a></xh:div></guid>
+      <guid isPermaLink="false"></guid>
   </item>
   {% endfor %}
 </channel>
