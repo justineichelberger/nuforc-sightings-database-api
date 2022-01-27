@@ -23,7 +23,7 @@ citation: https://github.com/hypothesis/h/blob/master/h/templates/rss.xml.jinja2
   {% for entry in feed.entries %}
   <item>
       <title>{{ entry.title }}</title>
-      <description>![CDATA[&#xA;<a href="{{ entry.link }}">sighting {{ entry.title }}</a>&#xA;{{ entry.description }}&#xA;database last updated ]]</description>
+      <description>&#xA;&lt;a href="{{ entry.link }}"&gt;sighting {{ entry.title }}&lt;/a&gt;&#xA;{{ entry.description }}&#xA;database last updated</description>
       <pubDate>{{ entry.pubDate }}</pubDate>
       <link>{{ entry.link }}</link>
       <!-- <guid isPermaLink="true">{{ entry.link }}</guid> -->
