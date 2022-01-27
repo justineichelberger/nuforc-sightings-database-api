@@ -199,7 +199,7 @@ def rss():
         entry_dictionary = {}
         entry_dictionary = dict(zip(database_row.keys(), row))
         entry_dictionary["title"] = todays_sightings_count-today_row_counter
-        entry_dictionary["description"] = f"In {entry_dictionary['CityAndOrCountry']} {entry_dictionary['StateOrProvince']} on {entry_dictionary['DateAndTime']} for approximately {entry_dictionary['MinimumDuration']} to {entry_dictionary['MaximumDuration']} minutes witness reports seeing '{entry_dictionary['CompleteSummary']}'"
+        entry_dictionary["description"] = f"In {entry_dictionary['CityAndOrCountry']} {entry_dictionary['StateOrProvince']} on {entry_dictionary['DateAndTime']} for approximately {entry_dictionary['MinimumDuration']} to {entry_dictionary['MaximumDuration']} minutes witness reports: '{entry_dictionary['CompleteSummary']}'"
         entry_dictionary["pubDate"] = rss_RFC822(database_selector().split('/')[-1].split('_'))
         entry_dictionary["guid"] = entry_dictionary['CompleteSummaryURL']
         entry_dictionary["link"] = entry_dictionary['CompleteSummaryURL']
