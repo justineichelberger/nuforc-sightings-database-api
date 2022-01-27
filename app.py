@@ -10,10 +10,6 @@ from datetime import date, datetime
 from flask import Flask, url_for, jsonify, render_template, request 
 from os import path
 
-# rss_RFC822 = {'weekday':datetime.now().strftime('%a'), 'day':'%02d' % datetime.now().day, 'month':datetime.now().strftime("%b"), 'year':'%04d' % datetime.now().year, 'hour':'%02d' % datetime.now().hour, 'minute':'%02d' % datetime.now().minute, 'second':'%02d' % datetime.now().second, 'timezone':time.strftime('%z')}  
-# print(f"{rss_RFC822['weekday']}, {rss_RFC822['day']} {rss_RFC822['month']} {rss_RFC822['year']} {rss_RFC822['hour']}:{rss_RFC822['minute']}:{rss_RFC822['second']} {rss_RFC822['timezone']}")
-
-
 # initiate flask app
 app = flask.Flask(__name__) 
 app.config["DEBUG"] = True  
