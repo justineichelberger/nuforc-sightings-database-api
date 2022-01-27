@@ -16,16 +16,15 @@ citation: https://github.com/hypothesis/h/blob/master/h/templates/rss.xml.jinja2
   <link>{{ feed.html_url }}</link>
   <atom:link href="{{ feed.rss_url }}" rel="self" type="application/rss+xml" />
   <description>https://github.com/justineichelberger/nuforc-sightings-database-api</description>
-  <source url="https://github.com/justineichelberger/nuforc-sightings-database-api">https://github.com/justineichelberger/nuforc-sightings-database-api</source>
   <pubDate>{{ feed.pubDate }}</pubDate>
 
   {% for entry in feed.entries %}
   <item>
       <title>{{ entry.title }}</title>
       <description>Sighting {{ entry.title }} {{ entry.description }} database last updated on {{ entry.pubDate }}</description>
-      <pubDate>{{ entry.pubDate }}</pubDate>
+      <link>{{ entry.link }}</link>
       <guid isPermaLink="true">{{ entry.link }}</guid>
-      <source url="{{ entry.link }}">{{ entry.link }}<source>
+      <pubDate>{{ entry.pubDate }}</pubDate>
   </item>
   {% endfor %}
 </channel>
