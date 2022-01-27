@@ -170,7 +170,7 @@ def random():
     return jsonify(today_database)
 
 ### rss feed route
-@app.route('/sightings/today/rss')
+@app.route('/sightings/today/rss.xml')
 def rss():
 #### obtain day-class information for today's feed
     todays_ordinal_MODish_year = dayclass()

@@ -10,22 +10,22 @@ citation: https://github.com/hypothesis/h/blob/master/h/templates/rss.xml.jinja2
 
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0"
-     xmlns:atom="http://www.w3.org/2005/Atom"
-     xmlns:xh="http://www.w3.org/1999/xhtml">
+     xmlns:atom="http://www.w3.org/2005/Atom">
 <channel>
   <title>{{ feed.title }}</title>
   <link>{{ feed.html_url }}</link>
   <atom:link href="{{ feed.rss_url }}" rel="self" type="application/rss+xml" />
-  <description  type="xhtml"><xh:div><br><a href="https://github.com/justineichelberger/nuforc-sightings-database-api">https://github.com/justineichelberger/nuforc-sightings-database-api</a><br>{{ feed.description }}</xh:div></description>
+  <description>https://github.com/justineichelberger/nuforc-sightings-database-api</description>
+  <source url="https://github.com/justineichelberger/nuforc-sightings-database-api">https://github.com/justineichelberger/nuforc-sightings-database-api</source>
   <pubDate>{{ feed.pubDate }}</pubDate>
 
   {% for entry in feed.entries %}
   <item>
       <title>{{ entry.title }}</title>
-      <description  type="xhtml"><xh:div><br><a href="{{ entry.link }}">Sighting {{ entry.title }}</a><br>{{ entry.description }}<br>database last updated on {{ entry.pubDate }}<br></xh:div></description>
+      <description>Sighting {{ entry.title }} {{ entry.description }} database last updated on {{ entry.pubDate }}</description>
       <pubDate>{{ entry.pubDate }}</pubDate>
-      <link>{{ entry.link }}</link>
-      <guid isPermaLink="false"></guid>
+      <guid isPermaLink="true">{{ entry.link }}</guid>
+      <source url="{{ entry.link }}">{{ entry.link }}<source>
   </item>
   {% endfor %}
 </channel>
