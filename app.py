@@ -204,7 +204,7 @@ def rss():
         today_row_counter += 1
 #### generate rss feed dictionary
     entries = entries_list
-    feed = {"title":f'ufo sightings from dayclass {todays_ordinal_MODish_year} in history',"html_url":"https://nuforc-sightings-database-api.herokuapp.com","rss_url":"https://nuforc-sightings-database-api.herokuapp.com/sightings/today/rss","description":"database last updated on: ","pubDate":f"{rss_RFC822(database_selector().split('/')[-1].split('_'))}", "entries":entries}
+    feed = {"title":f'ufo sightings from dayclass {todays_ordinal_MODish_year} in history',"html_url":"https://nuforc-sightings-database-api.herokuapp.com","rss_url":"https://nuforc-sightings-database-api.herokuapp.com/sightings/today/rss.xml","description":"database last updated on: ","pubDate":f"{rss_RFC822(database_selector().split('/')[-1].split('_'))}", "entries":entries}
     return render_template('rss.xml', feed=feed)
 
 if __name__=='__main__':
