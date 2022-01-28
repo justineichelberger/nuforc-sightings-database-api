@@ -14,7 +14,7 @@ citation: https://github.com/hypothesis/h/blob/master/h/templates/rss.xml.jinja2
 <channel>
   <title>{{ feed.title }}</title>
   <link>{{ feed.html_url }}</link>
-  <atom:link href="{{ feed.rss_url }}" rel="self" type="application/xml"/>
+  <atom:link href="{{ feed.rss_url }}" rel="self" type="application/rss+xml"/>
   <description>https://github.com/justineichelberger/nuforc-sightings-database-api</description>
   <pubDate>{{ feed.pubDate }}</pubDate>
 
