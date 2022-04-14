@@ -72,9 +72,7 @@ def scrape(base_url):
             browser.visit(report_url)
             report_html = bs(browser.html, 'html.parser')
             try:
-                # print(link) 
                 report_data_headers = report_html.thead.find_all('tr')
-                # print(report_data_headers)
             except Exception:
                 report_data_headers = []
 #### obtain complete list of data rows for each monthly report
@@ -87,7 +85,6 @@ def scrape(base_url):
 ##### first obtain a list of column names
                     if counter == 1:
                         header_list = pd.Series(header.text.split('\n'))
-                        print(header_list)
 ##### subsequently, obtain a list of row data
                     row_list = pd.Series(row.text.split('\n'))
 ##### prepare a row of data to be appended to today_in_ufo_sigthings_df dataframe
@@ -127,7 +124,6 @@ def scrape(base_url):
                         row_dictionary['url'] = report_card_string
                         try:
                             report_card_html_iterated = [cell for cell in report_card_html.tbody.find_all('font')]
-                            # print(len(report_card_html_iterated))
                             if len(report_card_html_iterated) > 1:
                                 for cell in report_card_html.tbody.find_all('font'):
                                     cell_counter += 1
@@ -139,7 +135,6 @@ def scrape(base_url):
                             row_dictionary['Full Summary'] = row_dictionary['Summary']
                     rowObject = row_dictionary.values()
                     rowList = [item for item in rowObject]
-                    # print(tuple(rowList))
                     database_cursor.execute('''INSERT INTO nuforcSightings VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)''', tuple(rowList))
                     database_connection.commit()
     browser.quit()

@@ -1,0 +1,230 @@
+        <div class="header"id="header" style="color:lightgray; text-transform: uppercase;">
+            <h4>nuforc api
+            </h4>
+            <p style="font-size: 24px; font-weight: bold">dayclass {{todays_ordinal_modulus_year}}
+            </p>
+        </div>
+
+        <div id="navbar">
+            <a id="index" href="#index" onclick="window.scrollTo(0,index_offset); onclickNavbarFunction('index'); onclickNavbarTermFunction('index');" style="font-size: 18px; font-weight: bold">index
+            </a>
+            <a id="navbaroverview" href="#overview" onclick="onclickAssignContinuous('overview'); onclickNavbarFunction('overview'); onclickNavbarTermFunction('overview');" style="font-size: 18px; font-weight: bold">overview
+            </a>
+            <a id="navbardelineation" href="#delineation" onclick="onclickAssignContinuous('delineation'); onclickNavbarFunction('delineation');" style="font-size: 18px; font-weight: bold">delineation
+            </a>
+        </div>
+
+        <div id="padder">
+        </div>
+
+        <div id="indextable">
+            <table class="grid-container" style='background-color: black; border-collapse: collapse; color: lightgray; font-family: verdana;  position: float; text-transform: uppercase; z-index: 1;'>
+                <tr>
+                    <th style="font-size: 15px; font-weight: bold; padding-left: 24vw; padding-top: 15px; text-align: left;">
+                        index
+                    </th>
+                    <th class="leftrighthalf" style="font-size: 15px; font-weight: bold; padding-top: 24px;">
+                    </th>
+                </tr>
+                <tr>
+                    <td style="padding: 10px;">
+                    </td>
+                    <td style="padding: 10px;">
+                    </td>
+                </tr>
+                <tr style="padding-bottom: 10px;">
+                    <td class="rightlefthalf" style="font-size: 13px; font-weight: bold;">
+                        endpoints
+                    </td>
+                    <td class="leftrighthalf" style="font-size: 13px; font-weight: bold;">
+                        urls
+                    </td>
+                </tr>
+                {% for link in links %}
+                    {% if link[1] != 'index' %}
+                        {% set href_string = '#'+link[1] %}
+                        {% set href = link[1] %}
+                    {% else %}
+                        {% set href_string = '#'+link[1]+'~' %}
+                        {% set href = 'index~' %}
+                    {% endif %}
+                    {% if link[0].split('/')[2] != 'query' and link[0].split(':')[-2] != '/sightings/query' and link[0] != '' %}
+                        <tr>
+                            <td class="rightlefthalf"  style="font-size: 12px;"><a href="{{href_string}}" onclick="onclickNavbarFunction('delineation'); onclickIndexTermFunction('{{href}}')" style="color:lightgray;">{{link[1]}}</a></td>
+                            <td class="leftrighthalf" style="font-size: 12px;"><a style="color:lightgray;" href="{{link[0]}}">{{link[0]}}{{link[0].split(':')[-2]}}</a></td>
+                        </tr>
+                    {% elif link[0].split('/')[-1] == 'query' %}
+                        <tr>
+                            <td class="rightlefthalf"  style="font-size: 12px;"><a href="{{href_string}}" onclick="onclickNavbarFunction('delineation'); onclickIndexTermFunction('{{href}}')" style="color:lightgray;">{{link[1]}}</a></td>
+                            <td class="leftrighthalf" style="font-size: 12px;"><a style="color:lightgray;" href="/sightings/today/random">/sightings</a>/query?<a style="font-style: italic;">parameter(s){{href_string}}</a></td>
+                        </tr>
+                    {% elif link[0].split(':')[-2] == '/sightings/query' %}
+                        <tr>
+                            <td class="rightlefthalf" style="font-size: 12px;">
+                                <a href="{{href_string}}" onclick="onclickNavbarFunction('delineation'); onclickIndexTermFunction('{{href}}')" style="color:lightgray;">{{link[1]}}
+                                </a>
+                            </td>
+                            <td class="leftrighthalf" style="font-size: 12px;">
+                                <a style="color:lightgray;" href="/sightings/today/random">/sightings</a>/query?{{link[0].split(':')[-1]}}=<a style="font-style: italic;">value
+                                </a>&{{href_string}}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </table>
+            <a onclick="onclickVisitHref('{{href_target_string}}'); onclickIndexTermFunction('{{href_target_string}}');" style="color: lightgray; font-size: 8px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase;">continuous view
+            </a>
+            <br>
+            <!-- <a onclick="window.scrollTo(0,0); onclickIndexFunction();" style="color: lightgray; font-size: 8px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase;">top
+            </a> -->
+            <br>
+        </div>
+        
+        <div class="content" style="background-color: black;">  
+            <div id="overviewtable">
+                <div id="overview" style="color: lightgray; font-size: 15px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase;">
+                    <p style="padding-bottom: 60px">overview
+                    </p>
+                    <a onclick="onclickAssignContinuous('overview'); onclickVisitHref('overview'); onclickIndexTermFunction('overview');" style="font-size: 8px;">continuous view
+                    </a>
+                    <br>
+                    <br>
+                    <!-- <a onclick="window.scrollTo(0,0); onclickIndexFunction();" style="font-size: 8px;">top
+                    </a> -->
+                    <br>          
+                </div>
+            </div>
+
+            <div id="delineationtable">
+                <div id="delineation" style="color: lightgray; font-size: 15px; font-weight: bold; padding-bottom: 36px; padding-left: 24vw; text-align: left; text-transform: uppercase;">
+                    <p>delineation
+                    </p>
+                    <a onclick="onclickAssignContinuous('delineation'); onclickVisitHref('delineation'); onclickIndexTermFunction('delineation');" style="font-size: 8px;">continuous view
+                    </a>
+                    <br>
+                    <br>
+                    <!-- <a onclick="window.scrollTo(0,0); onclickIndexFunction();" style="font-size: 8px;">top
+                    </a>         -->
+                </div>
+            </div>
+
+            <div id="contents" style="color: lightgray;">
+                {% set i = 0|int() %}
+                {% for link in links %}
+                    {% if link[1] != 'index' %}
+                        {% set href_target_string = link[1] %} 
+                        {% set documentation_dictionary = documentor[link[0].replace('.', '').replace('/', '.').replace(':','.')[1:]] %}
+                    
+                    {% else %}
+                        {% set href_target_string = 'index~' %} 
+                        {% set documentation_dictionary = documentor['index'] %}
+                    {% endif %}
+                    <p id="{{href_target_string}}" style="color: lightgray; float: left; font-size: 12px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase; width: 50%;">{{href_target_string}}</p>
+                    <div id="{{href_target_string}}table" style="float: left; width: 50%;">
+                        <table>
+                            <tr style="width: 50%">
+                                <td>
+                                    <table>
+                                        {% for key in documentation_dictionary %}
+                                        <tr style="display: flex; flex-flow: column, row;">
+                                            <td style="display: flex; font-size: 12px; justify-content: flex-start; padding-left: 8vw; text-transform: uppercase; width: 14vw;">{{key.split('_')[0]}}
+                                            </td>
+                                            <td style="font-size: 12px; text-align:left; width: 26vw;">{{documentation_dictionary[key]}}
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            {% if link[1] != 'dayclass' %}
+                                {% set input_value = random_sightings[i][database_mapping_dictionary[endpoints_to_database_mapping_dictionary[link[1]]]] | string() %}
+                                {% if input_value != '' %}
+                                <td> 
+                                    <table style="float: right; padding-right: 8vw; width: 42vw;">
+                                        <tr>                           
+                                            <th id="embedder" style="display: block; font-size: 10px; text-align: left; text-transform: uppercase;">input
+                                                <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}={{ input_value }}
+                                                </pre>
+                                                output
+                                            </th>
+                                        </tr>
+                                        {% for item in random_sighting %}
+                                        <tr>
+                                            {% if item != 'SummaryIncipit' and item != 'CompleteSummaryURL' and item != 'CompleteSummary' %}
+                                                <td style="display: block; font-size: 12px; justify-content: left;">
+                                                    {{item}} : {{random_sighting[item]}}
+                                                </td>
+                                            {% else %}
+                                                <td style="display: block; font-size: 12px; justify-content: left;">
+                                                    {{item}} : {{random_sighting[item]}}
+                                                </td>
+                                        </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                        </table>
+                                    </td>
+                                {% else %}
+                                    {% if link[1] != 'rss' and link[1] != 'query' and link[1] != 'sitemap' and link[1] != 'index' %}
+                                        <th id="embedder" style="display: block; font-size: 10px; text-align: left; text-transform: uppercase;">input
+                                            <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}
+                                            </pre>output
+                                        </th>
+                                        <th style="background-color: gray; display: block; float: left; justify-content: left;">
+                                            <iframe id="iFrameExampleOutput" type="text/html" src="sightings/today/random" frameborder="0">
+                                            </iframe>
+                                        </th>
+                                    {% elif link[1] != 'index' and link[1] != 'query' and link[1] != 'rss' %}
+                                        <th id="embedder" style="display: block; font-size: 10px; text-align: left; text-transform: uppercase;">input
+                                            <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}
+                                            </pre>output
+                                        </th>
+                                        <th style="background-color: gray; display: block; float: left; justify-content: left;" >
+                                            <iframe id="iFrameExampleOutput" type="text/html" src="{{link[0].replace(':','?')}}" frameborder="0">
+                                            </iframe>
+                                        </th>  
+                                    {% else %}
+                                        <th id="embedder" style="display: block; font-size: 10px; text-align: left; text-transform: uppercase;">input
+                                            <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}
+                                            </pre>
+                                    {% endif %}
+                                {% endif %}
+                            {% else %}
+                                {% set input_value = random_sightings[i][database_mapping_dictionary[endpoints_to_database_mapping_dictionary[link[1]]]] | string() %}
+                                <td> 
+                                    <table style="float: right; padding-right: 8vw; width: 42vw;">
+                                        <tr>
+                                            <th style="display: block; font-size: 10px; text-align: left; text-transform: uppercase;">input
+                                                <pre style="font-size: 14px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}={{ input_value[-4:] }}
+                                                </pre>output
+                                            </th>
+                                        </tr>
+                                        {% for item in random_sighting %}
+                                        <tr>
+                                            {% if item != 'SummaryIncipit' and item != 'CompleteSummaryURL' and item != 'CompleteSummary' %}
+                                                <td style="display: block; font-size: 12px; justify-content: left;">
+                                                    {{item}} : {{random_sighting[item]}}
+                                                </td>
+                                            {% else %}
+                                                <td style="display: block; font-size: 12px; justify-content: left;">
+                                                    {{item}} : {{random_sighting[item]}}
+                                                </td>
+                                        </tr>
+                                            {% endif %}
+                                        {% endfor %}
+                                    </table>
+                                </td>    
+                            {% endif %}
+                            </tr>
+                        </table>
+                        <a onclick="onclickAssignContinuous('{{href_target_string}}'); onclickVisitHref('{{href_target_string}}'); onclickIndexTermFunction('{{href_target_string}}');" style="color:lightgray; font-size: 8px; font-weight: bold; padding-left: 24vw; justify-content: left; text-transform: uppercase;">continuous view
+                        </a>
+                        <a onclick="onclickNavbarFunction('delineation'); onclickAssignContinuous('{{href_target_string}}'); onclickIndexCardFunction('{{href_target_string}}');" style="color:lightgray; font-size: 8px; font-weight: bold; padding-left: 24vw; justify-content: left; text-transform: uppercase;">term view
+                        </a>
+                        <!-- <a onclick="window.scrollTo(0,0); onclickIndexFunction();" style="color:lightgray; font-size: 8px; font-weight: bold; padding-bottom: 100px; padding-left: 24vw; justify-content: left; text-transform: uppercase;">top
+                        </a> -->
+                        <br>
+                        <br> 
+                    </div>
+                {% set i = i +1 %}
+                {% endfor %}
+            </div>
+        </div>

@@ -1,70 +1,650 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
     <head>
-        <script>
-        </script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="API developed by: justin eichelberger">
+        <title>nuforc-sightings-database-api</title>
+        <style>
+        body {
+        background-color:black;
+        margin: 0;
+        font-size: 28px;
+        font-family: verdana;
+        }
+
+        .embed_html_rendered_json {
+            background-color: black;
+            color: lightgray;
+            position: relative;
+            padding-bottom: 100%; /* set the aspect ratio here as (height / width) * 100% */
+            height: 0;
+            overflow: hidden;
+            max-width: 50vw;
+        }
+
+        .embed_html_rendered_json iframe {
+            background-color: black;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .header {
+        background-color: black;
+        padding: 12px;
+        padding-left: 22.2vw;
+        text-align: left;
+        }
+
+        .resize-animation-stopper * {
+            transition: none !important;
+            animation: none !important;
+        }
+
+        .rightlefthalf {
+            grid-column-start: 4;
+            grid-column-end: 6;
+            grid-row: 1;
+            padding-left: 24vw;
+            text-align: left;
+        }
+
+        .leftrighthalf {
+            grid-column-start: 7;
+            grid-column-end: 9;
+            grid-row: 1;
+            padding-left: 18.15vw;
+            text-align: left;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto;
+            width: 100vw;
+        }
+
+        .grid-item {
+            justify-content: space-evenly;
+            text-align: center;
+        }
+
+        #navbar {
+        overflow: hidden;
+        background-color: #000;
+        text-transform: uppercase;
+        width: 100vw;
+        }
+
+        #navbar a { 
+        color: lightgray;
+        display: block;
+        float: center;
+        font-size: 16px;
+        font-weight: bold;
+        padding: 5px 7px;
+        padding-left: 8.2vw;
+        text-align: left;
+        text-decoration: none;
+        transition: 2s ease-in;
+        }
+
+        #navbar a:hover {
+        background-color: gray;
+        color: black;
+        transition: .3s ease-in;
+        }
+
+        #navbar a.active {
+        background-color: lightgray;
+        color: black;
+        }
+
+        #padder {
+        background-color: #000;
+        }
+
+        .content {
+        padding: 0;
+        }
+
+        .floating {
+        height: 58px;
+        width: 100%;    
+        }
+
+        .sticky {
+        position: fixed;
+        top: 0px;
+        width: 100%;
+        }
+
+        </style>
     </head>
-    <body style="background-color: black; z-index: 0;">
+    <body onload="onloadContinuousSpacing({{links}}); onclickIndexFunction(); window.scrollTo(0,0);" style="background-color: black;">
 
-        <!-- <h2 id='header' style='padding-right: 8%; text-transform: uppercase; text-align: right; font-family: verdana; color: lightgray; z-index: 1'>
-            today_in_this_solar_year_of_gregorian_calendar is 
-            dayclass {{todays_ordinal_MODish_year}}
-        </h2> -->
+        <div class="header"id="header" style="color:lightgray; text-transform: uppercase;">
+            <p style="font-size: 16px; font-weight: bold">ordinal dayclass {{todays_ordinal_modulo_year}}
+            </p>
+            <h4>n<span style="font-size: 8px">.</span>u<span style="font-size: 8px">.</span>f<span style="font-size: 8px">.</span>o<span style="font-size: 8px">.</span>r<span style="font-size: 8px"> .</span>c<span style="font-size: 8px">.</span> sightings database api
+            </h4>
+        </div>
 
-        <!-- <p id='subheader' style='text-transform: uppercase;'>
-            on day_class {{todays_ordinal_MODish_year}} of gregorian_calendar_solar_year these unidentified phenomena were observed
-        </p> -->
+        <div id="navbar">
+            <a id="index" href="#index" onclick="window.scrollTo(0,index_offset); onclickNavbarFunction('index'); onclickNavbarTermFunction('indextable'); document.getElementById('indextable').setAttribute('style','height: 100vh;');" style="font-size: 18px; font-weight: bold">index
+            </a>
+            <a id="navbaroverview" href="#overviewtable" onclick="onclickNavbarFunction('overview');  onclickNavbarTermFunction('overviewtable'); document.getElementById('overviewtable').setAttribute('style','height: 100vh; padding-top: 96px');" style="font-size: 18px; font-weight: bold">overview
+            </a>
+            <a id="navbardelineation" href="#delineationtable" onclick="onclickNavbarFunction('delineation'); onclickNavbarTermFunction('delineationtable');" style="font-size: 18px; font-weight: bold">delineation
+            </a>
+        </div>
 
-        <table align="right" style='background-color: black; border-collapse: collapse; color: lightgray; font-family: verdana; text-transform: uppercase; width: 600px; z-index: 1'>
+        <div id="padder">
+        </div>
+
+        <div id="indextable">
+            <table class="grid-container" style='background-color: black; border-collapse: collapse; color: lightgray; font-family: verdana;  position: float; text-transform: uppercase; z-index: 1;'>
                 <tr>
-                    <th>
+                    <th style="font-size: 15px; font-weight: bold; padding-left: 24vw; padding-top: 15px; text-align: left;">
+                        index
                     </th>
-                    <th style="font-size: 18px; text-align: left;">
-                        dayclass {{todays_ordinal_MODish_year}}
+                    <th class="leftrighthalf" style="font-size: 15px; font-weight: bold; padding-top: 24px;">
                     </th>
                 </tr>
-                <tr style="font-size: 14px; text-align: left;">
-                    <th>
-                        endpoint
-                    </th>
-                    <th>
-                        url
-                    </th>
+                <tr>
+                    <td style="padding: 10px;">
+                    </td>
+                    <td style="padding: 10px;">
+                    </td>
+                </tr>
+                <tr style="padding-bottom: 10px;">
+                    <td class="rightlefthalf" style="font-size: 13px; font-weight: bold;">
+                        endpoints
+                    </td>
+                    <td class="leftrighthalf" style="font-size: 13px; font-weight: bold;">
+                        urls
+                    </td>
                 </tr>
                 {% for link in links %}
-                    {% if link[0].split('/')[2] != 'query' and link[0].split(':')[-2] != '/sightings/query_parameter'%}
-                        <tr style="font-size: 12px; text-align: left;">
-                            <td style="text-align: left; padding-right: 10px;">{{link[1]}}</td>
-                            <td style="text-align: left;"><a style="color:lightgray;" href="{{link[0]}}">{{link[0]}}{{link[0].split(':')[-2]}}</a></td>
-                        </tr>
+                    {% if link[1] != 'index' %}
+                        {% set href_string = '#'+link[1] %}
+                        {% set href = link[1] %}
+                    {% else %}
+                        {% set href_string = '#'+link[1]+'~' %}
+                        {% set href = 'index~' %}
                     {% endif %}
-                    {% if link[0].split('/')[-1] == 'query' %}
-                        <tr style="font-size: 12px; text-align: left;">
-                            <td style="text-align: left; padding-right: 10px;">{{link[1]}}</td>
-                            <td style="text-align: left;"><a style="color:lightgray;" href="/sightings/today/random">/sightings</a>/query?<a style="font-style: italic;">parameter(s)</a></td>
+                    {% if link[0].split('/')[2] != 'query' and link[0].split(':')[-2] != '/sightings/query' and link[0] != '' %}
+                        <tr>
+                            <td class="rightlefthalf"  style="font-size: 12px;">
+                                <a href="{{href_string}}" onclick="onclickVisitHref('{{href}}', {{links}}); onclickAssignContinuous('{{href}}', {{links}}); onclickIndexCardFunction('{{href}}'); onclickNavbarTermFunction('{{href}}')" style="color:lightgray;">{{link[1]}}
+                                </a>
+                            </td>
+                            <td class="leftrighthalf" style="font-size: 12px;">
+                                <a style="color:lightgray;" href="{{link[0]}}">{{link[0]}}{{link[0].split(':')[-2]}}
+                                </a>
+                            </td>
                         </tr>
-                    {% elif link[0].split(':')[-2] == '/sightings/query_parameter' %}
-                        <tr style="font-size: 12px; text-align: left;">
-                            <td style="text-align: left; padding-right: 10px;">{{link[1]}}</td>
-                            <td style="text-align: left;"><a style="color:lightgray;" href="/sightings/today/random">/sightings</a>/query?{{link[0].split(':')[-1]}}=<a style="font-style: italic;">value</a>&</td>
+                    {% elif link[0].split('/')[-1] == 'query' %}
+                        <tr>
+                            <td class="rightlefthalf"  style="font-size: 12px;">
+                                <a href="{{href_string}}" onclick="onclickVisitHref('{{href}}', {{links}}); onclickAssignContinuous('{{href}}', {{links}}); onclickIndexCardFunction('{{href}}'); onclickNavbarTermFunction('{{href}}')" style="color:lightgray;">{{link[1]}}
+                                </a>
+                            </td>
+                            <td class="leftrighthalf" style="font-size: 12px;">
+                                <a style="color:lightgray;" href="/sightings/today/random">/sightings/query?<span style="font-style: italic;">parameter(s)</span>
+                                </a>
+                            </td>
+                        </tr>
+                    {% elif link[0].split(':')[-2] == '/sightings/query' %}
+                        <tr>
+                            <td class="rightlefthalf" style="font-size: 12px;">
+                                <a href="{{href_string}}" onclick="onclickVisitHref('{{href}}', {{links}}); onclickAssignContinuous('{{href}}', {{links}}); onclickIndexCardFunction('{{href}}');onclickNavbarTermFunction('{{href}}')" style="color:lightgray;">{{link[1]}}
+                                </a>
+                            </td>
+                            <td class="leftrighthalf" style="font-size: 12px;">
+                                <a style="color:lightgray;" href="/sightings/today/random">/sightings/query?{{link[0].split(':')[-1]}}=<span style="font-style: italic;">value&</span>
+                                </a>
+                            </td>
                         </tr>
                     {% endif %}
                 {% endfor %}
-        </table>
-        <!-- <p id="randomData" style="font-size: 10px;">
-            {{random_ufo_sighting_from_today}}
-        </p>
-        <p id="todaysData" style="font-size: 10px;">
-            [{{today_in_ufo_sightings|safe}}]
-        </p> -->
-        <script type='text/javascript'>
-            function inject_data(variable) {
-                return variable
-            };
-            const today_in_ufo_sightings = inject_data( 
-                [{{today_in_ufo_sightings|safe}}] 
-            );
-            console.log(today_in_ufo_sightings);
-        </script>
+            </table>
+            <a onclick="onclickVisitHref('indextable', {{links}}); onclickAssignContinuous('indextable', {{links}});onclickNavbarFunction('index'); onclickNavbarTermFunction('indextable'); onclickIndexCardFunction('indextable'); window.location.assign('#indextable'); window.scrollBy(0,-navbar_height);" style="color: lightgray; font-size: 8px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase;">continuous view
+            </a>
+            <br>
+            <a onclick="onclickVisitHref('index', {{links}}); onclickAssignContinuous('index', {{links}}); window.scrollTo(0,0); onclickIndexFunction();" style="color: lightgray; font-size: 8px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase;">top
+            </a>
+            <br>
+        </div>
+        
+        <div class="content" style="background-color: black;">  
+            <div id="overviewtable">
+                <div id="overview" style="color: lightgray; font-size: 15px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase;">
+                    <p>overview
+                    </p>
+                    <p style="color: lightgray; font-size: 11px; font-weight: normal; line-height: 132%;">This Python/Flask API provides features for accessing a consilidated version of the National U.F.O. Reporting Center's sightings <a href="https://nuforc.org/databank/" style="color: lightgray;">'Data Bank' by 'Event Date'</a> via the endpoints listed in the 'DELINEATION' section below and referenced in the 'INDEX' above. The version of that database that can be accessed here is presented in its unaltered state with transformed data appended to the source data rather than transformed and then overwritten.  With the exception of the  <code style="font-weight: bold;">random</code>, <code style="font-weight: bold;">rss.xml</code> and <code style="font-weight: bold;">sitemap</code> endpoints, all of the examples provided in the this document are limited to displaying one row of random data from a plausible (although ultimately hypothetical) response provided by that endpoint; or, the endpoint is a branch node in the URL tree but is not a responsive (e.g. standalone) endpoint in and of itself (i.e. the <code>query</code>) endpoint).  The <code style="font-weight: bold;">random</code> endpoint only ever displays one row of data.  The <code style="font-weight: bold;">rss.xml</code> endpoint provides a validated rss feed that shows a complete list of sightings from the 'this day in history' (e.g. from today's <code style="font-weight: bold">dayclass</code>, in other words, the resulting data displayed has the same source as the /sightings/query?dayclass=<span style="font-style: italic">today's_two_digit_month_and_two_digit_year</span> endpoint). The application is also largely self-documenting given a Flask route definition and a properly formatted and named Python dictionary.</p>
+                    <a onclick="onclickVisitHref('overviewtable', {{links}}); onclickAssignContinuous('overviewtable', {{links}}); onclickNavbarFunction('overview'); onclickNavbarTermFunction('overviewtable'); onclickIndexCardFunction('overviewtable');" style="font-size: 8px;">continuous view
+                    </a>
+                    <br>
+                    <br>
+                    <a onclick="onclickVisitHref('index', {{links}}); onclickAssignContinuous('index', {{links}});window.scrollTo(0,0); onclickIndexFunction();" style="font-size: 8px;">top
+                    </a>
+                    <br>          
+                </div>
+            </div>
+
+            <div id="delineationtable">
+                <div id="delineation" style="color: lightgray; font-size: 15px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase;">
+                    <p>delineation
+                    </p>
+                    <a onclick="onclickVisitHref('delineationtable', {{links}}); onclickAssignContinuous('delineationtable', {{links}}); onclickNavbarFunction('delineation'); onclickNavbarTermFunction('delineationtable'); onclickIndexCardFunction('delineationtable');" style="font-size: 8px;">continuous view
+                    </a>
+                    <br>
+                    <br>
+                </div>
+            </div>
+
+            <div id="contents" style="color: lightgray;">
+                {% for link in links %}
+                    {% set loop_index = loop.index0 %}
+                    {% if link[1] != 'index' %}
+                        {% set href_target_string = link[1] %} 
+                        {% set documentation_dictionary = documentor[link[0].replace('.', '').replace('/', '.').replace(':','.')[1:]] %}
+                    {% else %}
+                        {% set href_target_string = 'index~' %} 
+                        {% set documentation_dictionary = documentor['index'] %}
+                    {% endif %}
+                    <p id="{{href_target_string}}" style="color: lightgray; float: left; font-size: 12px; font-weight: bold; padding-left: 24vw; text-align: left; text-transform: uppercase; width: 50%;">{{href_target_string}}</p>
+
+                    <div id="{{href_target_string}}table" style="float: left; width: 50%;">
+                        <table>
+                            <tr style="width: 50%">
+                                <td>
+                                    <table>
+                                        {% for key in documentation_dictionary %}
+                                        <tr style="display: flex; flex-flow: column, row;">
+                                            <td style="display: flex; font-size: 13px; justify-content: flex-start; padding-left: 8vw; text-transform: uppercase; width: 14vw;">{{key.split('_')[0]}}
+                                            </td>
+                                            <td style="font-size: 10px; text-align:left; text-transform: uppercase; width: 26vw;">{{documentation_dictionary[key]}}
+                                            <br>
+                                            <br>
+                                            <br>
+                                            <br>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    </table>
+                                </td>
+                            {% if link[1] != 'dayclass' %}
+                                    {% if link[1] != 'index' and link[1] != 'random' and link[1] != 'rss' and link[1] != 'sitemap' and link[1] != 'today' %}
+                                        {% set input_value = random_sightings[loop_index][endpoints_to_database_mapping_dictionary[link[1]]] %}
+                                        <th id="embedder" style="display: inline-block; font-size: 10px; padding-top: 4px;text-align: left; text-transform: uppercase;">input
+                                            <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}={{input_value}}
+                                            </pre>output
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </th>
+                                        <th style="background-color: gray; display: block; float: left; justify-content: left;">
+                                            <iframe id="iFrameExampleOutput" class="iFrameExampleOutputDynamicJSON" frameborder="0" srcdoc="{{ random_sightings[loop_index]}}<br><br>{{ random_sightings[loop_index].values() | list }}" title="{{link[1]}}iframe" type="text/html">
+                                            </iframe>
+                                        </th>
+                                    {% elif link[1] != 'index' and link[1] != 'rss' and link[1] != 'sitemap' %}
+                                        <th id="embedder" style="display: inline-block; font-size: 10px; padding-top: 4px;text-align: left; text-transform: uppercase;">input
+                                            <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}
+                                            </pre>output
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </th>
+                                        <th style="background-color: gray; display: block; float: left; justify-content: left;">
+                                            <iframe id="iFrameExampleOutput" class="iFrameExampleOutputDynamicJSON" frameborder="0" srcdoc="{{ random_sighting }}<br><br>{{ random_sighting.values() | list }}" title="{{link[1]}}iframe" type="text/html" >
+                                            </iframe>
+                                        </th>
+                                    {% elif link[1] == 'sitemap' %}
+                                        <th id="embedder" style="display: inline-block; font-size: 10px; padding-top: 4px;text-align: left; text-transform: uppercase;">input
+                                            <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}
+                                            </pre>output
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </th>
+                                        <th style="background-color: gray; display: block; float: left; justify-content: left;">
+                                            <iframe id="iFrameExampleOutput" class="iFrameExampleOutputDynamicJSON" frameborder="0" srcdoc="{{ links }}" title="{{link[1]}}iframe" type="text/html">
+                                            </iframe>
+                                        </th>
+                                    {% elif link[1] == 'rss' %}
+                                        <th id="embedder" style="display: inline-block; font-size: 10px; padding-top: 4px;text-align: left; text-transform: uppercase;">input
+                                            <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}
+                                            </pre>output
+                                            <br>
+                                            <br>
+                                            <br>
+                                        </th>
+                                        <th style="background-color: gray; display: block; float: left; justify-content: left;">
+                                            <iframe id="iFrameExampleOutput" class="iFrameExampleOutputDynamicJSON" frameborder="0" srcdoc="{{ feed }}" title="{{link[1]}}iframe" type="text/html">
+                                            </iframe>
+                                        </th>
+                                    {% else %}
+                                        <th id="embedder" style="display: block; font-size: 10px; padding-top: 4px; text-align: left; text-transform: uppercase;">input
+                                            <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}
+                                            </pre>
+                                    {% endif %}
+                            {% else %}
+                                {% if link[1] != 'rss' and link[1] != 'query' and link[1] != 'sitemap' and link[1] != 'index' and link[1] != 'random' and link[1] != 'today' and link[1] != 'sightings' %}
+                                    {% set input_value = random_sightings[loop_index][endpoints_to_database_mapping_dictionary[link[1]]] | string() | list()%}
+                                    
+                                    <th id="embedder" style="display: block; font-size: 10px; padding-top: 4px; text-align: left; text-transform: uppercase;">input
+                                        <pre style="font-size: 16px; text-transform: lowercase;">https://nuforc-sightings-database-api.herokuapp.com{{link[0].replace(':','?')}}={{input_value[-4:]|join('')}}
+                                        </pre>output
+                                        <br>
+                                        <br>
+                                        <br>
+                                    </th>
+                                    <script type="application/json">
+                                        var = ;
+                                    </script>
+                                    <th style="background-color: gray; display: block; float: left; justify-content: left;">
+                                        <iframe id="iFrameExampleOutput" class="iFrameExampleOutputDynamicJSON" frameborder="0" srcdoc="{{ random_sightings[loop_index] }}<br><br>{{ random_sightings[loop_index].values() | list }}" title="{{link[1]}}iframe" type="text/html">
+                                        </iframe>
+                                    </th>
+                                {% endif %}    
+                            {% endif %}
+                            </tr>
+                        </table>
+                        <a onclick="onclickVisitHref('{{href_target_string}}', {{links}}); onclickAssignContinuous('{{href_target_string}}', {{links}});  onclickIndexCardFunction('{{href_target_string}}'); onclickIndexTermFunction('{{href_target_string}}', {{links}}); " style="color:lightgray; font-size: 8px; font-weight: bold; padding-left: 24vw; justify-content: left; text-transform: uppercase;">continuous view
+                        </a>
+                        <a onclick="onclickVisitHref('{{href_target_string}}', {{links}}); onclickAssignContinuous('{{href_target_string}}', {{links}}); onclickIndexCardFunction('{{href_target_string}}');" style="color:lightgray; font-size: 8px; font-weight: bold; padding-left: 24vw; justify-content: left; text-transform: uppercase;">term view
+                        </a>
+                        <a onclick="onclickVisitHref('index', {{links}}); onclickAssignContinuous('index', {{links}}); window.scrollTo(0,0); onclickIndexFunction();" style="color:lightgray; font-size: 8px; font-weight: bold; padding-bottom: 100px; padding-left: 24vw; justify-content: left; text-transform: uppercase;">top 
+                        </a>
+                        <br>
+                        <br> 
+                    </div>
+                {% endfor %}
+            </div>
+
+        </div>
+
     </body>
+    <script type='text/javascript'>
+
+        function inject_data(variable) {
+            return variable;
+        };
+
+        const random_sightings = inject_data( 
+            [{{random_sightings|safe}}] 
+        );
+        
+        console.log(random_sightings);
+
+        const database_mapping_dictionary = inject_data( 
+            [{{database_mapping_dictionary|safe}}] 
+        );
+
+        console.log(database_mapping_dictionary[0]);
+
+        const endpoints_to_database_mapping_dictionary = inject_data( 
+            [{{endpoints_to_database_mapping_dictionary|safe}}] 
+        );
+
+        console.log(endpoints_to_database_mapping_dictionary[0]);
+        
+        console.log(Object.keys(endpoints_to_database_mapping_dictionary[0]));
+
+        for (let i = 0; i < Object.keys(endpoints_to_database_mapping_dictionary[0]).length; i++) {
+            console.log(Object.keys(endpoints_to_database_mapping_dictionary[0])[i]);
+            console.log(Object.values(endpoints_to_database_mapping_dictionary[0])[i]);
+            console.log(database_mapping_dictionary[0][endpoints_to_database_mapping_dictionary[0][Object.keys(endpoints_to_database_mapping_dictionary[0])[i]]]);
+        };
+
+        for (let i = 0; i < random_sightings[0].length; i++) {
+            console.log('complete', random_sightings[0][i]);
+        };
+
+        function iframesrcdocinjection(json) {
+            let prettyJSON = JSON.stringify(json, null, 4)
+            document.getElementByClassName('PrettyDynamicIframeExampleOutputJSON').srcdoc = prettyJSON;
+            return json
+        };
+
+        function onscrollFunction() {
+            if (window.pageYOffset >= sticky) {
+                navbar.classList.add("sticky");
+                padder.style.height = `${navbar_height}px`;
+            } else {
+                navbar.classList.remove("sticky");
+                padder.style.height = "0px";
+            }
+        };
+
+        function onclickNavbarFunction(href) {
+            document.getElementById(href).style.paddingTop = '5px';
+            try  {
+                document.getElementById(`${href}`).style.paddingTop = '0px';
+            } catch (error) {
+                console.log(error);
+            }
+            if (href == 'index') {
+                document.getElementById('index').classList.remove("active");
+                document.getElementById('navbaroverview').classList.remove("active");
+                document.getElementById('navbardelineation').classList.remove("active");
+                document.getElementById('index').classList.add("active");
+                document.getElementById(`${href}`).style.paddingTop = navbar_height+'px';
+                document.getElementById(`${href}table`).style.height = '100vh';
+            } else if (href == 'overviewtable') {
+                document.getElementById('index').classList.remove("active");
+                document.getElementById('navbaroverview').classList.remove("active");
+                document.getElementById('navbardelineation').classList.remove("active");
+                document.getElementById(`navbar${href}`).classList.add("active");
+                document.getElementById('index').style.paddingTop = '5px';
+                document.getElementById('overviewtable').style.paddingTop = '0px';
+                document.getElementById('delineationtable').style.paddingTop = '0px';
+                window.scrollBy(0, - document.getElementById("navbar").offsetHeight);
+            } else if (href == 'delineationtable') {
+                document.getElementById('index').classList.remove("active");
+                document.getElementById('navbaroverview').classList.remove("active");
+                document.getElementById('navbardelineation').classList.remove("active");
+                document.getElementById(`navbar${href}`).classList.add("active");
+                document.getElementById('index').style.paddingTop = '5px';
+                document.getElementById('overviewtable').style.paddingTop = '0px';
+                document.getElementById('delineationtable').style.paddingTop = '0px';
+                window.scrollBy(0, - document.getElementById("navbar").offsetHeight);
+            } else {
+                document.getElementById('index').classList.remove("active");
+                document.getElementById('navbaroverview').classList.remove("active");
+                document.getElementById('navbardelineation').classList.remove("active");
+                document.getElementById(`navbar${href}`).classList.add("active");
+                document.getElementById('index').style.paddingTop = '5px';
+                document.getElementById('overviewtable').style.paddingTop =  navbar_height+'px';
+                document.getElementById('delineationtable').style.paddingTop =  navbar_height+'px';
+                document.getElementById(`${href}table`).style.paddingTop = navbar_height+'px';
+            }
+        };
+
+        function onclickIndexFunction() {
+            window.scrollTo(0,0)
+            document.getElementById('index').classList.remove("active");
+            document.getElementById('navbaroverview').classList.remove("active");
+            document.getElementById('navbardelineation').classList.remove("active");
+        };
+
+        function onclickNavbarTermFunction(href) {
+            window.location.assign('#'+href)
+            document.getElementById('index').style.paddingTop = '5px';
+            if (href != 'rss') {
+                document.getElementById('rss').style.paddingTop = '0px';
+            };
+        };
+
+        function onclickIndexTermFunction(href, links) {
+            document.getElementById('delineationtable').style.height = 'auto';
+            document.getElementById('overviewtable').style.height = 'auto';
+            document.getElementById('indextable').style.height = 'auto';
+            document.getElementById('index').style.paddingTop = '5px';
+            try {
+                document.getElementById(href + 'table').style.height = '100vh';
+                for (let i = 0; i < links.length; i++) {
+                    document.getElementById(links[i] + 'table').style.height = 'auto';
+                };
+                } catch (error) {
+                    console.log(error);
+                }
+        };
+
+        function onclickIndexCardFunction(href) {
+            window.location.assign('#'+href);
+            if (href == 'indextable') {
+                try {
+                    document.getElementById(href).style.height = '100vh';
+                } catch (error) {
+                console.log(error);
+                };
+            } else {
+                try {
+                    document.getElementById(href + 'table').style.height = '100vh';
+                } catch (error) {
+                    console.log(error);
+                };
+            };
+            document.getElementById('delineationtable').style.height = 'auto';
+            document.getElementById('overviewtable').style.height = 'auto';
+            document.getElementById('indextable').style.height = 'auto';
+            document.getElementById('index').style.paddingTop = '5px';
+            if (href == 'overviewtable') {
+                document.getElementById('delineationtable').style.paddingTop = '0px';
+                document.getElementById('delineationtable').style.paddingTop = navbar_height + 'px';
+            };
+            if (href == 'delineationtable') {
+                document.getElementById('overviewtable').style.paddingTop = '0px';
+                document.getElementById('overviewtable').style.paddingTop = navbar_height + 'px';
+            };
+            if (href != 'indextable' || href != 'overviewtable' || href != 'delineationtable') {
+            } else {
+                window.scrollBy(0, - document.getElementById("navbar").offsetHeight - 15);
+            }; 
+            if (href != 'rss') {
+                document.getElementById('rss').style.paddingTop = '0px';
+            };
+        };
+
+
+        function onclickVisitHref(href, links) {
+            document.getElementById('index').classList.remove("active");
+            document.getElementById('navbaroverview').classList.remove("active");
+            document.getElementById('navbardelineation').classList.remove("active");
+            window.location.assign(window.location.href);
+            document.getElementById('overviewtable').style.paddingTop = '0px';
+            document.getElementById('delineationtable').style.paddingTop = '0px';
+            document.getElementById(href).style.paddingTop = '15px';
+            try {
+                document.getElementById(href+'table').style.height = 'auto';
+                document.getElementById(`${href}`).style.paddingTop = `${navbar_height + 15}px`;
+            } catch (error) {
+                console.log(error)
+            };
+            document.getElementById('overviewtable').style.height = 'auto';
+            document.getElementById('delineationtable').style.height = 'auto';
+            document.getElementById('index').style.paddingTop = '5px';
+            return console.log(href);
+        };
+
+        function onclickAssignContinuous(href, links) {
+            for (let i = 0; i < links.length; i++) {
+                document.getElementById(links[i] + 'table').style.height = 'auto';
+                document.getElementById(links[i]).style.paddingTop = `${navbar_height + 15}px`;
+            };
+            document.getElementById('index').classList.remove("active");
+            document.getElementById('navbaroverview').classList.remove("active");
+            document.getElementById('navbardelineation').classList.remove("active");
+            document.getElementById('overviewtable').style.paddingTop = `${navbar_height}px`;
+            document.getElementById('delineationtable').style.paddingTop = `${navbar_height}px`;
+            window.location.assign(window.location.href);
+            if (href != 'rss') {
+                document.getElementById('rss').style.paddingTop = '0px';
+            };
+            if (href == 'indextable') {
+                try {
+                    document.getElementById(`${href}`).style.paddingTop = '0px';
+                } catch (error) {
+                    console.log(error);
+                }
+            } else {
+                window.scrollBy(0, document.getElementById("navbar").offsetHeight - 15);
+            };
+            document.getElementById('index').style.paddingTop = '5px';
+        };
+
+        function onloadContinuousSpacing(links) {
+            for (let i = 0; i < links.length; i++) {
+                document.getElementById(links[i] + 'table').style.height = 'auto';
+                document.getElementById(links[i]).style.paddingTop = `${navbar_height + 15}px`;
+                document.getElementById('index~').style.paddingTop = `${navbar_height + 15}px`;
+            };
+            document.getElementById('index').style.paddingTop = '5px';
+            document.getElementById('overviewtable').style.paddingTop = navbar_height + 'px';
+            document.getElementById('delineationtable').style.paddingTop = navbar_height + 'px';
+            document.getElementById('rss').style.paddingTop = '0px';
+            document.getElementById('index~').style.paddingTop = navbar_height + 'px';
+        }
+
+        function resizeIFrameToFitContent( iFrame ) {
+            iFrame.width  = document.getElementById('embedder').getBoundingClientRect().width;
+            iFrame.height = "100px";
+        };
+
+        window.addEventListener('DOMContentLoaded', function(e) {
+
+            // var iFrame = document.getElementById( 'iFrameExampleOutput' );
+            // resizeIFrameToFitContent( iFrame );
+
+            // or, to resize all iframes:
+            var iframes = document.querySelectorAll("iframe");
+            for( var i = 0; i < iframes.length; i++) {
+                resizeIFrameToFitContent( iframes[i] );
+            }
+        } );
+
+        let resizeTimer;
+        window.addEventListener("resize", () => {
+        document.body.classList.add("resize-animation-stopper");
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            document.   body.classList.remove("resize-animation-stopper");
+        }, 400);
+        });
+
+        window.onscroll = function() {onscrollFunction()};
+
+        var contents = document.getElementById("contents");
+        var embed_width = document.getElementById('embedder').getBoundingClientRect().width;
+
+        var navbar = document.getElementById("navbar");
+        var navbar_offset = document.getElementById('navbar').offsetTop;
+
+        var index = document.getElementById("index");
+        var index_offset = document.getElementById('index').offsetTop;
+
+        var navbaroverview = document.getElementById("navbaroverview");
+        var navbaroverview_offset = document.getElementById('overviewtable').offsetTop;
+
+        var navbardelineation = document.getElementById("navbardelineation");
+        var navbardeliniation_offset = document.getElementById('delineationtable').offsetTop;
+
+        var indextable = document.getElementById("indextable");
+        var indextable_offset = document.getElementById("indextable").offsetTop;
+        var links = [{{ links|safe }}]
+        var navbar = document.getElementById("navbar");
+        var sticky = navbar.offsetTop;
+        
+
+        console.log(embed_width);
+        
+        let navbar_height = navbar.offsetHeight;
+
+        console.log(navbar_height);
+
+        onscrollFunction();
+
+    </script>
 </html>
