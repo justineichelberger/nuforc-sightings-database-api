@@ -28,6 +28,8 @@ jobs:
         with: 
           python-version: '3.8'
           cache: 'pip'
+      
+      - name: load python environment
         run: pip install -r requirements.txt
 
       # Runs a set of commands using the runners shell
