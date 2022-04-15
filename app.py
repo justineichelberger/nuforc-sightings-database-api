@@ -8,10 +8,10 @@ import sqlite3
 import time
 
 from datetime import date, datetime
-from documentation import *
+from engine__documentation import *
+from engine__markdown import *
 from flask import Flask, url_for, jsonify, render_template, request
 from glom import glom
-from markdown_templating import *
 from os import path
 
 #
@@ -20,7 +20,7 @@ endpoints_to_database_mapping_dictionary = {}
 # initiate flask app and set folder for template rendering
 app = flask.Flask(__name__, template_folder='templates') 
 app.config["DEBUG"] = True
-app.config['TEMPLATES_AUTO_RELOAD'] = True  
+app.config['TEMPLATES_AUTO_RELOAD'] = True
 
 ## obtain day-class information for today
 def dayclass():
@@ -271,7 +271,6 @@ def page_not_found(e):
 ###
 @app.route('/', methods=['GET', 'POST'])
 def index():
-    githubflavoredmarkdown(sitemapper())
     documentor_dictionary = {}
     database_keys_list = []
     database_mapping_dictionary = {}
@@ -323,8 +322,6 @@ def index():
     random_sighting = dict(dict([item for item in zip(tuple(database_keys_list), tuple(random_sighting_from_today()[0]))]))
 
     generate_documentation_examples(directory_list, list_of_random_sightings, dict([item for item in zip(tuple(database_keys_list), tuple(random_sighting_from_today()[0]))]), rss_feed(), sitemapper());
-
-    # <br><br>{{ '../endpoints'+link[0].replace(':','/')+'/'+link[0].replace(':','/').split('/')[-1]+'.txt' }}
     
     return render_template("index.html", database_mapping_dictionary=database_mapping_dictionary, documentor=documentor_dictionary, endpoints_to_database_mapping_dictionary=query_mapper('',''), feed=rss_feed(), links=sitemapper(), random_sighting=random_sighting, random_sightings=list_of_random_sightings, todays_ordinal_modulo_year=dayclass())
 
