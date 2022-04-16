@@ -4,8 +4,8 @@ name: scheduled update
 
 # Controls when the workflow will run
 on:
-  schedule:
-    - cron: "*/12 * * * *"
+#   schedule:
+#     - cron: "*/12 * * * *"
     
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
