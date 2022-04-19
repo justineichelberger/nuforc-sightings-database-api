@@ -361,7 +361,7 @@ def random():
 ### rss feed route
 @app.route('/sightings/today/rss.xml')
 def rss():
-    return render_template('rss.xml', feed=rss_feed)
+    return render_template('rss.xml', feed=rss_feed())
 
 if __name__=='__main__':
     app.run(debug=True, use_reloader=False)
